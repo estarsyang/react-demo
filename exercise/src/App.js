@@ -2,27 +2,27 @@ import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 
-class App extends React.Component {
+import Son from './Son';
 
-  f1 = (a, b, event) => {
-    console.log(this);
-    console.log(a);
-    console.log(b);
-    console.log(event);
+class App extends React.PureComponent {
 
-    event.preventDefault()
+  state = {
+    mes: 'hello son'
   }
 
+  changeMes(sonMes) {
+    this.setState({
+      mes: sonMes
+    })
+  }
   render() {
     return (
-      <div className="App">
-        <div onClick={() => {
-          this.f1(1, 2)
-        }}>123</div>
-      </div>
-    );
+      <div>
+        i am App
+        <Son mes={this.state.mes} changeMes={this.changeMes.bind(this)}>
+        </Son>
+      </div>)
+
   }
-
 }
-
 export default App;
