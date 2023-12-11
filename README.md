@@ -643,3 +643,137 @@
     )
    }
    ```
+
+### class and style
+
+1.  How to use class and style:
+
+    1. class need to rename, for example, `class="box"` need to rename to `className="box"`.
+    2. `CSS` is stored in a single css file, and import into `js` file.
+
+       ```css
+       // Son.css
+       .son {
+         color: pink;
+       }
+       ```
+
+       ```js
+       // Son.js
+
+       import "./Son.css";
+       ```
+
+    3. inline-style is not used, `react` is using object to represent inline-style.
+       ```jsx
+       // inline-style
+       <div
+         style={{
+           color: "red",
+           fontSize: "20px",
+         }}
+       ></div>
+       ```
+
+2.  Have some problems
+
+    1.  css scope? Import directly a css file will lead the scope of the css file diffusion to global. But using `module.css` can limit the scope of css. Rename `Son.css` to `Son.module.css`, and import into `Son.js`.
+
+              ```css
+              // Son.module.css
+              .son {
+                color: pink;
+              }
+              .son1 {
+                background: red;
+              }
+              ```
+
+              ```js
+              // Son.js
+              import sonStyle from "./Son.module.css";
+              console.log(sonStyle); // {son:"Son_son__dD7iL"}
+
+              class Son extends React.PureComponent {
+                state = {
+                  sonMes: "hello father",
+                };
+                render() {
+                  console.log(this.props);
+                  return (
+                    <div>
+                      i am son of App
+                      <div className={sonStyle.son}>123</div>
+                      {/* how to render multiple class, using "+"" */}
+                      <div className={sonStyle.son + " " + sonStyle.son1}>123</div>
+                    </div>
+                  );
+                }
+              }
+              ```
+
+    2.  how to easily add class or remove class? Using `classnames` to add or remove. Using `classnames` to bind style object, and defint a boolean value to decide whether class is add or remove.
+
+        ```js
+        // Son.js
+        import classnames from "classnames/bind";
+        import sonStyle from "./Son.module.css";
+        console.log(sonStyle); // {son: 'Son_son__dD7iL', son1: 'Son_son1__2RSmA'}
+
+        const bindClassnames = classnames.bind(sonStyle);
+
+        class Son extends React.PureComponent {
+          state = {
+            hasSon1: true, // to add or remove son1 class
+          };
+
+          render() {
+            return (
+              <div>
+                <div
+                  {/* call new method to bind class. */}
+                  className={bindClassnames({
+                    son: true,
+                    son1: this.state.hasSon1,
+                  })}
+                >
+                  1111
+                </div>
+                <button
+                  onClick={() => {
+                    this.setState({
+                      hasSon1: true,
+                    });
+                  }}
+                >
+                  add son1 class
+                </button>
+                <button
+                  onClick={() => {
+                    this.setState({
+                      hasSon1: false,
+                    });
+                  }}
+                >
+                  remove son1 class
+                </button>
+              </div>
+            );
+          }
+        }
+        ```
+
+### lifecycle
+
+![react lifecycle](./images/lifecycle.jpg)
+
+1. types
+
+   1. constructor
+   2. shouldComponentUpdate: (conflict with `PureComponent`, since `PureComponent` is accomplished by `shouldComponentUpdate`) to do performance optimize.
+   3. render: decide what to render.
+   4. componentDidMount: component is mounted, and do initital operations, for example, ajax request, chart render and so on.
+   5. componentDidUpdate: update finish
+   6. componentDidUnmount: component will be unmounted, to remove event listener, clear timer and so on.
+   7. ...
+      p09

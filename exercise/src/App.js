@@ -1,8 +1,9 @@
-import logo from './logo.svg';
+
 import './App.css';
 import React from 'react';
 
 import Son from './Son';
+
 
 class App extends React.PureComponent {
 
@@ -17,9 +18,12 @@ class App extends React.PureComponent {
   }
   render() {
     return (
-      <div>
+      <div style={{
+        color: 'red',
+        fontSize: '20px'
+      }}>
         i am App
-        <Son mes={this.state.mes} changeMes={this.changeMes.bind(this)}>
+        <Son>
         </Son>
       </div>)
 
