@@ -1,32 +1,26 @@
 
-import './App.css';
+import Son from './Son';
+import { useState, useEffect, useMemo, useCallback, useRef, useContext, createContext } from 'react'
 import React from 'react';
 
-import Son from './Son';
+export const Context1 = createContext()
 
+function App() {
+  const div1 = useRef()
+  useEffect(() => {
+    console.log(div1);
+    console.log(div1.current);
+  }, [])
 
-class App extends React.PureComponent {
-
-  state = {
-    mes: 'hello son'
-  }
-
-  changeMes(sonMes) {
-    this.setState({
-      mes: sonMes
-    })
-  }
-  render() {
-    return (
-      <div style={{
-        color: 'red',
-        fontSize: '20px'
-      }}>
-        i am App
-        <Son>
-        </Son>
-      </div>)
-
-  }
+  return (
+    <div>
+      App
+      <p ref={div1}>App</p>
+      <Context1.Provider value={'hello world'}>
+        <Son />
+      </Context1.Provider>
+    </div>
+  )
 }
-export default App;
+
+export default App
