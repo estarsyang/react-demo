@@ -1168,3 +1168,54 @@
       ```
 
 9. ...
+
+### HOC (higher order component)
+
+1. Introduction: A design pattern where a function takes a component and returns a new component with additional features or behavior. It is a way to reuse component logic.
+2. Using:
+
+   ```js
+   // TestHoc.js
+   import React from "react";
+   export default function TestHoc(WrappedComponent) {
+     return class extends React.Component {
+       render() {
+         return (
+           <WrappedComponent
+             additionalProps={"hello from hoc"}
+             {...this.props}
+           />
+         );
+       }
+     };
+   }
+   // App.js
+   import Son from "./Son"
+   import TestHoc from './TestHoc'
+
+   const HocSon = TestHoc(Son)
+
+   function App() {
+     return (
+       <div>
+          123
+          <HocSon />
+       </div>
+     )
+   }
+
+   export default App
+
+   // Son.js
+   function Son(props) {
+
+    return (
+      <div>{props.additionalProps}</div>
+    )
+   }
+   export default Son
+   ```
+
+3. When to use?
+   1. a lot of similar logic could be using `HOC`
+   2. Provite lifecycle operations.
