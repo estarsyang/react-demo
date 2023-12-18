@@ -1219,3 +1219,87 @@
 3. When to use?
    1. a lot of similar logic could be using `HOC`
    2. Provite lifecycle operations.
+
+### Performance optimizez
+
+1. Avoid update when the same value update.
+   1. Introduction: When A state is assigned to the same value again, react will render this component again.
+   1. Fix: Using `PureComponent` (when using `class` component) and function component.
+2. Props led to re-render
+
+   1. State updated led to child component re-render.
+
+      1. Introduction: When a state in Parent component is updated, react will re-render all child component.
+      2. Fix: Using `React.memo`. Passing child components into `React.memo` and call it to return memory child components.
+
+         ```js
+         import Son from "./Son";
+         import { memo, useState } from "react";
+
+         const MemoSon = memo(Son);
+         function App() {
+           const [num, setNum] = useState(0);
+           return (
+             <div>
+               {num}
+               <button
+                 onClick={() => {
+                   setNum(num + 1);
+                 }}
+               >
+                 num+1
+               </button>
+
+               <MemoSon />
+             </div>
+           );
+         }
+         export default App;
+         ```
+
+   2. Re-defined state and methods led to child component re-render.
+
+      ```js
+      import Son from "./Son";
+      import { memo, useState } from "react";
+
+      const MemoSon = memo(Son);
+
+      function App() {
+        let obj = {
+          a: 1,
+        };
+
+        let f1 = () => {};
+
+        const [num, setNum] = useState(0);
+        return (
+          <div>
+            {num}
+            <button
+              onClick={() => {
+                setNum(num + 1);
+              }}
+            >
+              num+1
+            </button>
+
+            <MemoSon obj={obj} f1={f1} />
+          </div>
+        );
+      }
+
+      export default App;
+      ```
+
+      When num is adding 1, `Son` component will be update since `obj` and `f1` is re-defined. Although the value of `obj` and `f1` is the same, but they are assigned a new memory address. So to provent the problems, need to using `useMemo` and `useCallback` to modify states and methods.
+
+      ```js
+      // ...
+      let obj = useMemo(() => {
+        return { a: 1 };
+      }, []);
+
+      let f1 = useCallback(() => {}, []);
+      // ...
+      ```
