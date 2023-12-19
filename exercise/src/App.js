@@ -1,9 +1,5 @@
-
-
-
 import { connect } from 'react-redux'
-
-
+import { changeMes } from './store/toolkitIndex';
 
 function App(props) {
   console.log(props);
@@ -12,18 +8,27 @@ function App(props) {
       <p>App.js</p>
       {props.mes}
       <button onClick={() => {
-
-
-        props.dispatch({
-          type: 'changeMes',
-          playload: 'test'
-        })
-
+        props.changeMes()
       }}>update store mes</button>
     </div>
   )
 }
-let connectApp = connect((state) => {
-  return { ...state }
-})(App)
-export default connectApp
+function mapStateToProps(state) {
+  console.log(state);
+  return { ...state.msgReducer }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    changeMes() {
+      // dispatch({
+      //   type: 'msgSlice/changeMes',
+      //   playload: 'test'
+      // })
+      dispatch(changeMes('test'))
+
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

@@ -1,4 +1,4 @@
-import { legacy_createStore } from 'redux'
+import { legacy_createStore, combineReducers } from 'redux'
 
 function msgReducer(state = { mes: 'hello' }, action) {
   switch (action.type) {
@@ -11,7 +11,21 @@ function msgReducer(state = { mes: 'hello' }, action) {
 
 }
 
+function numReducer(state = { num: 0 }, action) {
+  switch (action.type) {
+    case 'changeMes':
+      state.num++
+      return { ...state }
+    default:
+      return state
+  }
+}
 
-const store = legacy_createStore(msgReducer)
+const reducer = combineReducers({
+  msgReducer,
+  numReducer
+})
+
+const store = legacy_createStore(reducer)
 
 export default store
