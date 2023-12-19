@@ -1,11 +1,9 @@
+import routes from "@/router";
+import { useRoutes } from "react-router-dom";
 
 function App() {
-
-  return (
-    <>
-      App
-    </>
-  )
+  const outlet = useRoutes(routes);
+  return <>{outlet}</>;
 }
 
-export default App
+export default App;

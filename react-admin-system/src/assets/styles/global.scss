@@ -1,0 +1,16 @@
+$color:#fff;
+
+body {
+  background:$color
+}
+
+// Home style
+.demo-logo-vertical {
+  height: 32px;
+  margin: 16px;
+  background: rgba(225,255,255, 0.3);
+}
+
+.site-layout .site-layout-background {
+  background: $color;
+}
